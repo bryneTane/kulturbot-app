@@ -11,12 +11,13 @@ import {
 } from "firebase/auth";
 import {
   collection,
-  serverTimestamp,
+  Timestamp,
   addDoc,
   onSnapshot,
   query,
   where,
 } from "firebase/firestore";
+import { format } from "date-fns";
 
 const NUMBER_OF_QUESTIONS = 3;
 
@@ -24,13 +25,20 @@ const auth = getAuth();
 
 const { TextArea } = Input;
 
-const q = query(collection(db, "questions"));
+const q = query(
+  collection(db, "questions"),
+  where(
+    "date",
+    "==",
+    format(new Date(Timestamp.now().toMillis()), "yyyy-MM-dd")
+  )
+);
 
 function App() {
   const isMobile = window.innerWidth < 1050;
 
   const { text } = useTypewriter({
-    words: ["Science", "History", "Arts", "News", "etc..."],
+    words: ["Science", "History", "Arts", "News", "Anything 😁"],
     loop: 0,
   });
 
@@ -39,13 +47,13 @@ function App() {
   const addQuestion = async (question) => {
     await addDoc(collection(db, "questions"), {
       ...question,
-      date: serverTimestamp(),
+      date: format(Timestamp.now().toMillis(), "yyyy-MM-dd"),
     });
   };
 
   useEffect(() => {
     onSnapshot(q, (snapshot) => {
-      if (snapshot.docs.length > NUMBER_OF_QUESTIONS) {
+      if (snapshot.docs.length >= NUMBER_OF_QUESTIONS) {
         setIsDisabled(true);
       } else {
         setIsDisabled(false);
@@ -103,7 +111,27 @@ function App() {
             </div>
           </div>
         </Col>
-        <Col span={isMobile ? 24 : 10}>
+        <Col span={isMobile ? 24 : 10} style={{ position: "relative" }}>
+          <div
+            style={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              alignItems: "center",
+              position: "absolute",
+              top: 0,
+              left: 0,
+            }}
+          >
+            <img
+              style={{
+                width: "100%",
+                opacity: 0.03,
+              }}
+              src="/kultur.png"
+              alt="kultur"
+            />
+          </div>
           <div
             style={{
               padding: isMobile ? 30 : "10px 60px 10px 60px",
@@ -137,7 +165,8 @@ function App() {
                     !values.prop1 ||
                     !values.prop2 ||
                     !values.prop3 ||
-                    !values.prop4
+                    !values.prop4 ||
+                    !values.answer
                   ) {
                     message.error("You must fill all the fields ! :)");
                   } else {
@@ -155,7 +184,8 @@ function App() {
                         message.success(
                           "Your question was succesfully saved !"
                         );
-                      } catch {
+                      } catch (error) {
+                        console.log(error);
                         message.error(
                           "Unfortunately, we could not save your question"
                         );
