@@ -36,3 +36,50 @@
     transform: rotate(360deg);
   }
 }
+
+.ant-input:focus {
+  border-color: #008037 !important;
+  outline: 0 !important;
+  -webkit-box-shadow: 0 0 0 2px #0080373b !important;
+  box-shadow: 0 0 0 2px #0080373b !important;
+}
+
+.ant-input:hover {
+  border-color: #008037 !important;
+}
+
+.ant-select-selector:focus {
+  border-color: #008037 !important;
+  outline: 0 !important;
+  -webkit-box-shadow: 0 0 0 2px #0080373b !important;
+  box-shadow: 0 0 0 2px #0080373b !important;
+}
+
+.ant-select-selector:hover {
+  border-color: #008037 !important;
+}
+
+.ant-btn:hover {
+  border-color: #008037 !important;
+  color: #008037 !important;
+}
+
+.ant-btn > div > svg {
+  transition: fill 0.4s ease-in-out !important;
+}
+
+.ant-btn:hover > div > svg {
+  fill: #008037 !important;
+}
+
+.ant-input {
+  border-radius: 5px;
+}
+
+.ant-select-selector {
+  border-radius: 5px !important;
+}
+
+#root {
+  min-height: 100% !important;
+}

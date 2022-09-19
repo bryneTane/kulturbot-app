@@ -18,6 +18,8 @@ import {
   where,
 } from "firebase/firestore";
 import { format } from "date-fns";
+import "./App.css";
+import TwitterIcon from "./icons/twitter";
 
 const NUMBER_OF_QUESTIONS = 3;
 
@@ -38,7 +40,9 @@ function App() {
   const isMobile = window.innerWidth < 1050;
 
   const { text } = useTypewriter({
-    words: ["Science", "History", "Arts", "News", "Anything 😁"],
+    words: ["Sciences", "History", "Arts", "News", "Anything else 😁"].map(
+      (value) => `${value} ?`
+    ),
     loop: 0,
   });
 
@@ -62,7 +66,15 @@ function App() {
   }, []);
 
   return (
-    <>
+    <div
+      style={{
+        minHeight: "100vh",
+        position: "relative",
+        backgroundImage: `url('/library.jpeg')`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+      }}
+    >
       {isDisabled && (
         <Alert
           style={{ textAlign: "center" }}
@@ -70,12 +82,29 @@ function App() {
           type="info"
         />
       )}
-      <Row style={{ height: "100vh" }}>
-        <Col span={isMobile ? 24 : 14} style={{ textAlign: "center" }}>
+      <div
+        style={{
+          backgroundColor: "black",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          height: "100%",
+          width: "100%",
+          opacity: 0.6,
+        }}
+      />
+      <Row
+        style={{ display: "flex", alignItems: "center", minHeight: "100vh" }}
+      >
+        <Col
+          span={isMobile ? 24 : 13}
+          style={{
+            textAlign: "center",
+          }}
+        >
           <div
             style={{
-              backgroundImage: `url('/library.jpeg')`,
-              height: isMobile ? 200 : "100%",
+              height: isMobile ? 300 : "100%",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -86,66 +115,66 @@ function App() {
           >
             <div
               style={{
-                backgroundColor: "black",
-                position: "absolute",
-                top: 0,
-                left: 0,
-                height: "100%",
-                width: "100%",
-                opacity: 0.6,
-              }}
-            />
-            <div
-              style={{
                 color: "#ffffff",
-                fontSize: isMobile ? 30 : 90,
+                fontSize: isMobile ? 37 : 80,
                 zIndex: 1,
-                fontFamily: "fantasy",
+                fontFamily: "Piedra",
+                textShadow: "10px 10px 20px black",
               }}
             >
-              Share what you know about{" "}
-              <span style={{ color: "#008037", fontWeight: "bold" }}>
+              <div>Something to share about </div>
+              <div
+                style={{
+                  color: "#008037",
+                  fontWeight: "bold",
+                }}
+              >
                 {text}
                 <Cursor cursorStyle="_" />
-              </span>
+              </div>
+              <div
+                style={{
+                  fontFamily: "Roboto",
+                  fontSize: isMobile ? 18 : 35,
+                  marginTop: isMobile ? 20 : 60,
+                }}
+              >
+                Enter a question with some answer options and submit it. Your
+                question will be asked as a game session by the Twitter bot{" "}
+                <span style={{ color: "#008037", fontWeight: "bold" }}>
+                  @kulturbot
+                </span>{" "}
+                !
+              </div>
             </div>
           </div>
         </Col>
-        <Col span={isMobile ? 24 : 10} style={{ position: "relative" }}>
+        <Col
+          span={isMobile ? 24 : 11}
+          style={{
+            position: "relative",
+            padding: isMobile ? 30 : "20px 110px 20px 110px",
+            // backgroundColor: "#00803709",
+            fontFamily: "Roboto",
+          }}
+        >
           <div
             style={{
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              alignItems: "center",
-              position: "absolute",
-              top: 0,
-              left: 0,
-            }}
-          >
-            <img
-              style={{
-                width: "100%",
-                opacity: 0.03,
-              }}
-              src="/kultur.png"
-              alt="kultur"
-            />
-          </div>
-          <div
-            style={{
-              padding: isMobile ? 30 : "10px 60px 10px 60px",
               width: "100%",
               height: "100%",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              backgroundColor: "#FCFFFD",
+              backgroundColor: "#FFFFFF",
+              boxShadow: "rgba(0, 0, 0, 0.5) 3px 3px 6px 2px",
+              padding: isMobile ? 30 : "15px 40px 15px 40px",
+              borderRadius: 30,
+              opacity: 0.93,
             }}
           >
             <img
               style={{
-                width: isMobile ? 200 : 280,
+                width: 200,
               }}
               src="/kultur.png"
               alt="kultur"
@@ -287,13 +316,8 @@ function App() {
                         justifyContent: "center",
                       }}
                     >
-                      <img
-                        style={{ marginRight: 10 }}
-                        width={25}
-                        src="/twitter.png"
-                        alt="twitter"
-                      />
-                      <span>Login with Twitter and Submit</span>
+                      <TwitterIcon style={{ width: 30, marginRight: 10 }} />
+                      <span>Submit with Twitter</span>
                     </div>
                   </Button>
                 </Form.Item>
@@ -302,7 +326,7 @@ function App() {
           </div>
         </Col>
       </Row>
-    </>
+    </div>
   );
 }
 
